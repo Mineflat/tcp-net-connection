@@ -60,7 +60,7 @@ public class Program
     }
     protected static string? Execute(string command)
     {
-        string buffer = null;
+        string? buffer = null;
         using (PowerShell PowerShellInstance = PowerShell.Create())
         {
             // Добавляем скрипт или команду для запуска
@@ -70,15 +70,19 @@ public class Program
             // Ждём завершения команды
             while (!asyncResult.IsCompleted)
             {
-                Console.WriteLine("Ожидание завершения PowerShell...");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("<< STARTING COMAND");
+                Console.ResetColor();
                 System.Threading.Thread.Sleep(1000);
             }
-            Console.WriteLine("Команда завершена.");
+            Console.WriteLine("DONE COMAND");
             // Получаем результаты команды
             foreach (PSObject result in PowerShellInstance.EndInvoke(asyncResult))
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 buffer += "POWERSHELL >> " + result.ToString() + "\n";
                 Console.WriteLine(buffer);
+                Console.ResetColor();
             }
         }
         return buffer;
