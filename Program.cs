@@ -7,6 +7,10 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Management.Automation;
+using System.IO;
+using System.Net.Security;
+using System.Security.Authentication;
+using System.Web.Services.Description;
 
 public class Program
 {
@@ -58,33 +62,8 @@ public class Program
         tcpClient.Close();
         tcpClient.Dispose();
     }
-    protected static string? Execute(string command)
-    {
-        string? buffer = null;
-        using (PowerShell PowerShellInstance = PowerShell.Create())
-        {
-            // Добавляем скрипт или команду для запуска
-            PowerShellInstance.AddScript(command);
-            // Асинхронно запускаем команду
-            var asyncResult = PowerShellInstance.BeginInvoke();
-            // Ждём завершения команды
-            while (!asyncResult.IsCompleted)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("<< STARTING COMAND");
-                Console.ResetColor();
-                System.Threading.Thread.Sleep(1000);
-            }
-            Console.WriteLine("DONE COMAND");
-            // Получаем результаты команды
-            foreach (PSObject result in PowerShellInstance.EndInvoke(asyncResult))
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                buffer += "POWERSHELL >> " + result.ToString() + "\n";
-                Console.WriteLine(buffer);
-                Console.ResetColor();
-            }
-        }
-        return buffer;
-    }
+    //protected static string? Execute(string command)
+    //{
+
+    //}
 }
